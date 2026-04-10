@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hitesh Cinematic | AI Magic</title>
+    <title>HC - AI Magic Studio</title>
     <style>
         :root { --p: #8b5cf6; --s: #ec4899; --bg: #020617; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
         .card { width: 90%; max-width: 450px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); }
-        .logo { width: 70px; height: 70px; border: 3px solid var(--p); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: var(--p); box-shadow: 0 0 15px var(--p); animation: glow 2s infinite; }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 15px var(--p); } 50% { box-shadow: 0 0 30px var(--s); border-color: var(--s); color: var(--s); } }
-        input, textarea { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; }
+        .logo { width: 60px; height: 60px; border: 3px solid var(--p); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--p); box-shadow: 0 0 15px var(--p); }
+        input, textarea { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px; }
         .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 15px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; }
-        #loader { display: none; margin: 20px auto; border: 4px solid #111; border-top: 4px solid var(--s); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; }
+        #loader { display: none; margin: 20px auto; border: 4px solid #111; border-top: 4px solid var(--s); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         img { width: 100%; border-radius: 15px; margin-top: 20px; display: none; border: 2px solid var(--p); }
     </style>
@@ -21,34 +20,31 @@
 
     <div class="card">
         <div class="logo">HC</div>
-        <h2 style="margin-bottom: 20px;">Hitesh Cinematic</h2>
+        <h2 style="margin-bottom: 20px; background: linear-gradient(var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Hitesh Cinematic</h2>
 
-        <div style="font-size: 0.7rem; color: #888; margin-bottom: 10px; text-align: left;">
-            <label>Paste New Token (hf_...):</label>
-            <input type="password" id="hfToken" placeholder="Paste your WRITE token here">
-        </div>
-
-        <textarea id="prompt" rows="2" placeholder="Describe something..."></textarea>
+        <input type="password" id="hfToken" placeholder="Paste New WRITE Token here">
+        <textarea id="prompt" rows="2" placeholder="Describe your imagination..."></textarea>
+        
         <button class="btn" id="genBtn">CREATE MAGIC ✨</button>
 
         <div id="loader"></div>
-        <p id="status" style="font-size: 0.75rem; margin-top: 10px; color: #fbbf24;"></p>
+        <p id="status" style="font-size: 0.7rem; margin-top: 10px; color: #aaa;"></p>
 
         <img id="resultImg">
-        <a id="down" href="#" download="hc_magic.png" style="display:none; color:var(--s); margin-top:10px; text-decoration:none;">📥 Download</a>
+        <a id="down" href="#" download="magic.png" style="display:none; color:var(--s); margin-top:10px; text-decoration:none; font-size: 0.8rem;">📥 Download Masterpiece</a>
     </div>
 
     <script>
-        // Load token from memory
-        const savedToken = localStorage.getItem('hc_token');
-        if(savedToken) document.getElementById('hfToken').value = savedToken;
+        // Memory se token uthao
+        const saved = localStorage.getItem('hc_token');
+        if(saved) document.getElementById('hfToken').value = saved;
 
         document.getElementById('genBtn').onclick = async () => {
             const token = document.getElementById('hfToken').value.trim();
             const prompt = document.getElementById('prompt').value;
             
-            if(!token || !prompt) return alert("Hitesh, Token aur Prompt dono dalo!");
-            localStorage.setItem('hc_token', token); // Save locally
+            if(!token || !prompt) return alert("Token aur Prompt dalo!");
+            localStorage.setItem('hc_token', token);
 
             const loader = document.getElementById('loader');
             const status = document.getElementById('status');
@@ -56,41 +52,45 @@
 
             loader.style.display = 'block';
             resultImg.style.display = 'none';
-            status.style.color = "#fbbf24";
-            status.innerText = "Connecting to AI server...";
+            status.innerText = "Bypassing Browser Security... Creating Magic.";
 
             try {
-                // Using Stable Diffusion 1.5 (It's more stable for free tier)
-                const response = await fetch(
-                    "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5",
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                        method: "POST",
-                        body: JSON.stringify({ inputs: prompt }),
-                    }
-                );
+                // 🚀 USING PROXY TO FIX "FAILED TO FETCH"
+                const modelUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
+                const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(modelUrl);
+
+                const response = await fetch(proxyUrl, {
+                    headers: { 
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify({ inputs: prompt }),
+                });
 
                 if (response.status === 503) {
-                    status.innerText = "AI is waking up... Wait 20 seconds and click again.";
+                    status.innerText = "AI is waking up... 30 seconds ruko aur phir click karo.";
                     return;
                 }
 
                 if (!response.ok) {
-                    const errorDetails = await response.json();
-                    throw new Error(errorDetails.error || "Token Invalid");
+                    const errorMsg = await response.text();
+                    throw new Error("Token galat hai ya limit khatam.");
                 }
 
                 const blob = await response.blob();
-                resultImg.src = URL.createObjectURL(blob);
+                const url = URL.createObjectURL(blob);
+                
+                resultImg.src = url;
                 resultImg.style.display = 'block';
-                document.getElementById('down').href = resultImg.src;
+                document.getElementById('down').href = url;
                 document.getElementById('down').style.display = 'block';
-                status.style.color = "#10b981";
-                status.innerText = "Success! Magic Created. ✨";
+                status.innerText = "Success! Magic Created! ✨";
 
             } catch (err) {
-                status.style.color = "#ef4444";
-                status.innerText = "API Error: " + err.message;
+                console.error(err);
+                status.innerText = "Error: " + err.message;
+                alert("Naya Token use karein aur Email Verify karein!");
             } finally {
                 loader.style.display = 'none';
             }
