@@ -3,62 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hitesh Cinematic | AI Magic Studio</title>
+    <title>Hitesh Cinematic | Mahadev Special</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        :root { --p: #8b5cf6; --s: #ec4899; --bg: #020617; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; overflow-x: hidden; }
+        :root { --p: #ff4d00; --s: #ff9900; --bg: #020617; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
 
         /* Splash Screen */
         #splash { position: fixed; top: 0; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
         .logo { width: 80px; height: 80px; border: 3px solid var(--p); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: var(--p); box-shadow: 0 0 20px var(--p); animation: glow 2s infinite; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 20px var(--p); } 50% { box-shadow: 0 0 40px var(--s); border-color: var(--s); color: var(--s); } }
 
-        /* Main UI */
-        .app { display: none; width: 90%; max-width: 450px; padding: 20px; }
+        /* Main App */
+        .app { display: none; width: 90%; max-width: 450px; padding: 15px; }
         .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        h1 { background: linear-gradient(45deg, var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; margin-bottom: 5px; }
+        h1 { background: linear-gradient(45deg, var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 1.8rem; }
         
-        textarea { width: 100%; padding: 15px; background: #000; border: 1px solid #333; border-radius: 15px; color: white; margin: 20px 0; box-sizing: border-box; outline: none; font-size: 1rem; }
-        .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 18px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        textarea { width: 100%; padding: 15px; background: #000; border: 1px solid #333; border-radius: 15px; color: white; margin: 20px 0; outline: none; font-size: 1rem; }
+        .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 18px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; }
         
         #loader { display: none; margin: 20px auto; }
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--s); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--p); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Result Area */
-        #result-box { display: none; margin-top: 25px; animation: fadeIn 0.8s; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        img { width: 100%; border-radius: 20px; border: 2px solid var(--p); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .down-btn { display: block; margin-top: 15px; color: var(--s); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        #result-box { display: none; margin-top: 25px; }
+        img { width: 100%; border-radius: 20px; border: 2px solid var(--p); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.5s; }
+        .down-btn { display: block; margin-top: 15px; color: var(--s); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen -->
     <div id="splash">
         <div class="logo">HC</div>
         <p style="margin-top:20px; letter-spacing: 5px; font-weight: bold;">HITESH CINEMATIC</p>
     </div>
 
-    <!-- Main App -->
     <div class="app" id="mainApp">
         <div class="card">
             <h1>Hitesh Cinematic</h1>
-            <p style="font-size: 0.8rem; color: #888;">AI Image Magic Studio</p>
+            <p style="font-size: 0.8rem; color: #888;">AI Image Magic Studio Pro</p>
 
-            <textarea id="prompt" rows="3" placeholder="Describe your dream... (e.g. A futuristic car in desert)"></textarea>
+            <textarea id="prompt" rows="3" placeholder="Describe Mahadev... (e.g. Mahadev meditating on Himalayas)"></textarea>
             
             <button class="btn" id="genBtn">CREATE MAGIC ✨</button>
 
             <div id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top:10px; font-size: 0.8rem; color: var(--s);">AI is painting for you...</p>
+                <p style="margin-top:10px; font-size: 0.8rem; color: var(--p);">AI is painting for you...</p>
             </div>
 
             <div id="result-box">
-                <img id="outputImg" src="" alt="AI Result">
-                <a id="downBtn" class="down-btn" href="#" download="hc_magic.png">📥 Download Masterpiece</a>
+                <img id="outputImg" src="">
+                <a id="downBtn" class="down-btn" href="#" download="mahadev_magic.png">📥 Download Masterpiece</a>
             </div>
         </div>
     </div>
@@ -69,46 +65,42 @@
             gsap.to("#splash", { opacity: 0, duration: 1, onComplete: () => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
-                gsap.from("#mainApp", { y: 30, opacity: 0, duration: 1 });
             }});
-        }, 3500);
+        }, 3000);
 
         const genBtn = document.getElementById('genBtn');
         const loader = document.getElementById('loader');
         const resultBox = document.getElementById('result-box');
         const outputImg = document.getElementById('outputImg');
-        const downBtn = document.getElementById('downBtn');
 
         genBtn.onclick = () => {
-            const prompt = document.getElementById('prompt').value;
-            if(!prompt) return alert("Hitesh, prompt toh dalo!");
+            let userPrompt = document.getElementById('prompt').value;
+            if(!userPrompt) return alert("Kuch toh likho Hitesh bhai!");
 
-            // Show Loading
+            // PROMPT ENHANCER (Hitesh special)
+            // Isse Mahadev ki image realistic aayegi
+            let enhancedPrompt = `Lord Shiva Mahadev, cinematic lighting, ultra-realistic 8k, divine glow, meditating, third eye, trident trishul, snake around neck, Himalayas background, high detail, masterpiece art style`;
+            
+            // Hum user ke prompt ko Mahadev ke features se mila denge
+            let finalPrompt = userPrompt + ", " + enhancedPrompt;
+
             genBtn.style.display = 'none';
             loader.style.display = 'block';
             resultBox.style.display = 'none';
 
-            // CREATE IMAGE MAGIC (The No-Fail Way)
-            const seed = Math.floor(Math.random() * 100000);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+            const seed = Math.floor(Math.random() * 999999);
+            // Using Flux model (More realistic than pichla wala)
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux`;
 
-            // Pre-load image to show smooth
             const tempImg = new Image();
             tempImg.src = imageUrl;
             
             tempImg.onload = () => {
                 outputImg.src = imageUrl;
-                downBtn.href = imageUrl;
-                
+                document.getElementById('downBtn').href = imageUrl;
                 loader.style.display = 'none';
                 genBtn.style.display = 'block';
                 resultBox.style.display = 'block';
-            };
-
-            tempImg.onerror = () => {
-                alert("Something went wrong. Try again!");
-                loader.style.display = 'none';
-                genBtn.style.display = 'block';
             };
         };
     </script>
