@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HC - AI Magic Studio</title>
+    <!-- Hugging Face Official Library -->
+    <script type="module">
+        import { HfInference } from "https://cdn.jsdelivr.net/npm/@huggingface/inference@2.6.4/+esm";
+        window.HfInference = HfInference;
+    </script>
     <style>
         :root { --p: #8b5cf6; --s: #ec4899; --bg: #020617; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
         .card { width: 90%; max-width: 450px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); }
         .logo { width: 60px; height: 60px; border: 3px solid var(--p); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--p); box-shadow: 0 0 15px var(--p); }
-        input, textarea { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px; }
+        input, textarea { width: 100%; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; }
         .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 15px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; }
-        #loader { display: none; margin: 20px auto; border: 4px solid #111; border-top: 4px solid var(--s); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        #loader { display: none; margin: 20px auto; border: 4px solid #111; border-top: 4px solid var(--s); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         img { width: 100%; border-radius: 15px; margin-top: 20px; display: none; border: 2px solid var(--p); }
     </style>
@@ -20,9 +25,9 @@
 
     <div class="card">
         <div class="logo">HC</div>
-        <h2 style="margin-bottom: 20px; background: linear-gradient(var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Hitesh Cinematic</h2>
+        <h2 style="margin-bottom: 20px;">Hitesh Cinematic</h2>
 
-        <input type="password" id="hfToken" placeholder="Paste New WRITE Token here">
+        <input type="password" id="hfToken" placeholder="Paste New WRITE Token (hf_...)">
         <textarea id="prompt" rows="2" placeholder="Describe your imagination..."></textarea>
         
         <button class="btn" id="genBtn">CREATE MAGIC ✨</button>
@@ -31,11 +36,11 @@
         <p id="status" style="font-size: 0.7rem; margin-top: 10px; color: #aaa;"></p>
 
         <img id="resultImg">
-        <a id="down" href="#" download="magic.png" style="display:none; color:var(--s); margin-top:10px; text-decoration:none; font-size: 0.8rem;">📥 Download Masterpiece</a>
+        <a id="down" href="#" download="hc_magic.png" style="display:none; color:var(--s); margin-top:10px; text-decoration:none;">📥 Download</a>
     </div>
 
-    <script>
-        // Memory se token uthao
+    <script type="module">
+        // Saved Token load karein
         const saved = localStorage.getItem('hc_token');
         if(saved) document.getElementById('hfToken').value = saved;
 
@@ -52,45 +57,33 @@
 
             loader.style.display = 'block';
             resultImg.style.display = 'none';
-            status.innerText = "Bypassing Browser Security... Creating Magic.";
+            status.innerText = "Using Official Inference Engine... Painting Art.";
 
             try {
-                // 🚀 USING PROXY TO FIX "FAILED TO FETCH"
-                const modelUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
-                const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(modelUrl);
+                // Official Hugging Face Client Initialize karein
+                const hf = new window.HfInference(token);
 
-                const response = await fetch(proxyUrl, {
-                    headers: { 
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    method: "POST",
-                    body: JSON.stringify({ inputs: prompt }),
+                const blob = await hf.textToImage({
+                    model: 'stabilityai/stable-diffusion-xl-base-1.0',
+                    inputs: prompt,
                 });
 
-                if (response.status === 503) {
-                    status.innerText = "AI is waking up... 30 seconds ruko aur phir click karo.";
-                    return;
-                }
-
-                if (!response.ok) {
-                    const errorMsg = await response.text();
-                    throw new Error("Token galat hai ya limit khatam.");
-                }
-
-                const blob = await response.blob();
                 const url = URL.createObjectURL(blob);
-                
                 resultImg.src = url;
                 resultImg.style.display = 'block';
                 document.getElementById('down').href = url;
                 document.getElementById('down').style.display = 'block';
-                status.innerText = "Success! Magic Created! ✨";
+                status.style.color = "#10b981";
+                status.innerText = "Magic Created Successfully! ✨";
 
             } catch (err) {
                 console.error(err);
-                status.innerText = "Error: " + err.message;
-                alert("Naya Token use karein aur Email Verify karein!");
+                if(err.message.includes("503")) {
+                    status.innerText = "AI is waking up... Please wait 30 seconds and click again.";
+                } else {
+                    status.innerText = "Error: Token may be invalid. Check write permission.";
+                    alert("Model Loading ya Token Error! Check console for details.");
+                }
             } finally {
                 loader.style.display = 'none';
             }
