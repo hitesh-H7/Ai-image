@@ -3,34 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hitesh Cinematic | AI HD Studio</title>
+    <title>Hitesh Cinematic | Ultimate AI</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root { --p: #8b5cf6; --s: #ec4899; --bg: #020617; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
 
-        /* Splash Screen */
         #splash { position: fixed; top: 0; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
         .logo { width: 80px; height: 80px; border: 3px solid var(--p); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: var(--p); box-shadow: 0 0 20px var(--p); animation: glow 2s infinite; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 20px var(--p); } 50% { box-shadow: 0 0 40px var(--s); border-color: var(--s); color: var(--s); } }
 
-        /* Main UI */
         .app { display: none; width: 90%; max-width: 450px; padding: 20px; }
-        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        h1 { background: linear-gradient(45deg, var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        h1 { font-size: 2rem; background: linear-gradient(45deg, var(--p), var(--s)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; margin: 0; }
         
-        textarea { width: 100%; padding: 15px; background: #000; border: 1px solid #333; border-radius: 15px; color: white; margin: 20px 0; outline: none; font-size: 1rem; }
-        .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 18px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; }
+        textarea { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid #333; border-radius: 15px; color: white; margin: 20px 0; outline: none; font-size: 1rem; box-sizing: border-box; transition: 0.3s; }
+        textarea:focus { border-color: var(--p); box-shadow: 0 0 10px var(--p); }
+
+        .btn { background: linear-gradient(45deg, var(--p), var(--s)); border: none; padding: 18px; color: white; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); transition: 0.3s; }
+        .btn:active { transform: scale(0.95); }
         
-        /* Loader */
         #loader { display: none; margin: 20px auto; }
         .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--s); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Result Area */
-        #result-box { display: none; margin-top: 25px; }
-        img { width: 100%; border-radius: 20px; border: 2px solid var(--p); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
-        .down-btn { display: inline-block; margin-top: 15px; color: var(--s); text-decoration: none; font-weight: bold; font-size: 0.9rem; border: 1px solid var(--s); padding: 8px 20px; border-radius: 20px; }
+        #result-box { display: none; margin-top: 25px; animation: fadeInUp 0.5s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        #outputImg { width: 100%; border-radius: 20px; border: 2px solid var(--p); box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .down-btn { display: inline-block; margin-top: 15px; color: var(--s); text-decoration: none; font-weight: bold; font-size: 0.9rem; border: 1px solid var(--s); padding: 10px 25px; border-radius: 50px; transition: 0.3s; }
+        .down-btn:hover { background: var(--s); color: #fff; }
     </style>
 </head>
 <body>
@@ -43,20 +45,21 @@
     <div class="app" id="mainApp">
         <div class="card">
             <h1>Hitesh Cinematic</h1>
-            <p style="font-size: 0.8rem; color: #888;">Premium AI Image Studio</p>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px;">Advanced AI Image Studio</p>
 
-            <textarea id="prompt" rows="3" placeholder="Type what you want to see... (e.g. Mahadev with trishul standing position)"></textarea>
+            <textarea id="prompt" rows="3" placeholder="Example: Mahadev meditating in Himalayas / Lamborghini in neon city"></textarea>
             
             <button class="btn" id="genBtn">CREATE MAGIC ✨</button>
 
             <div id="loader">
                 <div class="spinner"></div>
-                <p id="status-text" style="margin-top:10px; font-size: 0.8rem; color: var(--s);">AI is processing your HD Magic...</p>
+                <p id="status-txt" style="margin-top:15px; font-size: 0.85rem; color: var(--s); font-weight: 600;">AI is analyzing your request...</p>
             </div>
 
             <div id="result-box">
-                <img id="outputImg" src="" alt="AI Result">
-                <a id="downBtn" class="down-btn" href="#" target="_blank">📥 Download HD Masterpiece</a>
+                <img id="outputImg" src="" alt="AI Art Result">
+                <a id="downBtn" class="down-btn" href="#" target="_blank">📥 Download HD Image</a>
+                <p style="font-size: 0.65rem; color: #666; margin-top: 10px;">Long press image if download button fails</p>
             </div>
         </div>
     </div>
@@ -67,62 +70,51 @@
             gsap.to("#splash", { opacity: 0, duration: 1, onComplete: () => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
-                gsap.from("#mainApp", { y: 30, opacity: 0, duration: 1 });
             }});
-        }, 3500);
+        }, 3000);
 
         const genBtn = document.getElementById('genBtn');
         const loader = document.getElementById('loader');
+        const statusTxt = document.getElementById('status-txt');
         const resultBox = document.getElementById('result-box');
         const outputImg = document.getElementById('outputImg');
-        const downBtn = document.getElementById('downBtn');
-        const statusText = document.getElementById('status-text');
 
-        genBtn.onclick = async () => {
-            const prompt = document.getElementById('prompt').value;
-            if(!prompt) return alert("Hitesh bhai, kuch toh likho!");
+        genBtn.onclick = () => {
+            const userInput = document.getElementById('prompt').value;
+            if(!userInput) return alert("Hitesh bhai, imagination toh likho!");
 
-            // UI Setup
             genBtn.style.display = 'none';
             loader.style.display = 'block';
             resultBox.style.display = 'none';
-            statusText.innerText = "Generating HD Image... Please wait (1 min)";
+            statusTxt.innerText = "Enhancing Prompt & Creating HD Art...";
 
-            // Quality Keywords - Image ko realistic banane ke liye
-            const qualityExtras = "high definition, masterpiece, 8k, cinematic, detailed, realistic";
-            const finalPrompt = `${prompt}, ${qualityExtras}`;
-            const seed = Math.floor(Math.random() * 9999999);
-            
-            // Pollinations AI URL (HD Model)
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1024&height=1024&seed=${seed}&nologo=true&enhance=true`;
+            // --- SMART PROMPT ENHANCER ---
+            // Yeh user ki help karega exact image lane mein
+            const masterpiece = "masterpiece, ultra-realistic, 8k resolution, highly detailed, cinematic lighting, sharp focus, professional photography";
+            const finalPrompt = `${userInput}, ${masterpiece}`;
 
-            try {
-                // Image ko background mein fetch karenge taaki broken icon na dikhe
-                const response = await fetch(imageUrl);
+            const seed = Math.floor(Math.random() * 1000000);
+            // Using Flux model for exact subjects (Mahadev/Cars)
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1024&height=1024&seed=${seed}&nologo=true&enhance=true&model=flux`;
+
+            // Anti-Broken Image Logic
+            const imgLoader = new Image();
+            imgLoader.src = imageUrl;
+
+            imgLoader.onload = () => {
+                outputImg.src = imageUrl;
+                document.getElementById('downBtn').href = imageUrl;
                 
-                if (response.status === 429) {
-                    alert("Server par traffic zyada hai. 10 second ruko aur phir try karo!");
-                    throw new Error("Too Many Requests");
-                }
-
-                // Image blob create karenge download ke liye
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-
-                outputImg.src = blobUrl;
-                downBtn.href = blobUrl;
-                downBtn.download = "Hitesh_Cinematic_" + seed + ".png";
-                
-                resultBox.style.display = 'block';
-                statusText.innerText = "Magic Created! ✨";
-            } catch (err) {
-                console.error(err);
-                statusText.innerText = "Error! Trying again in 5 seconds...";
-                setTimeout(() => genBtn.click(), 5000);
-            } finally {
                 loader.style.display = 'none';
                 genBtn.style.display = 'block';
-            }
+                resultBox.style.display = 'block';
+            };
+
+            imgLoader.onerror = () => {
+                alert("Server busy! Ek baar phir try karo.");
+                loader.style.display = 'none';
+                genBtn.style.display = 'block';
+            };
         };
     </script>
 </body>
